@@ -1,30 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
-import styles from './styles.module.css'
-
-enum TimerState {
-  Start = 'start',
-  Stop = 'stop',
-  Reset = 'reset',
-}
-
-interface IProps {
-  num: number
-}
-
-const Clock = ({ num }: IProps) => {
-  const [time, setTime] = useState('00:00')
-
-  useEffect(() => {
-    const minutes = Math.floor(num / 60)
-
-    const min = minutes < 10 ? `0${minutes}` : `${minutes}`
-    const sec = num % 60 < 10 ? `0${num % 60}` : `${num % 60}`
-
-    setTime(`${min}:${sec}`)
-  }, [num])
-
-  return <div className={styles.clock}>{time}</div>
-}
+import { useRef, useState } from 'react'
+import { TimerState } from '../types'
+import { BreathButton } from './BreathButton'
+import { BreathCount } from './BreathCount'
+import { Clock } from './Clock'
+import { TimerButton } from './TimerButton'
 
 export default function Container() {
   const [count, setCount] = useState(0)
@@ -58,22 +37,10 @@ export default function Container() {
 
   return (
     <div>
-      <button onClick={handleTimer}>{stateTimer}</button>
+      <TimerButton stateTimer={stateTimer} handleTimer={handleTimer} />
       <Clock num={duration} />
-      <div
-        className={`${styles.container} ${
-          stateTimer === TimerState.Start ? styles.breathing : ''
-        }`}
-      >
-        <button
-          onClick={handleClick}
-          className={styles.button}
-          disabled={stateTimer !== TimerState.Stop}
-        >
-          breath
-        </button>
-      </div>
-      {count}
+      <BreathButton stateTimer={stateTimer} handleClick={handleClick} />
+      <BreathCount count={count} />
     </div>
   )
 }
