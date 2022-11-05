@@ -1,11 +1,8 @@
-import { TimerState } from '../types'
+import { useContext } from 'react'
+import { ContainerContext } from './Container'
 
-export const TimerButton = ({
-  stateTimer,
-  handleTimer,
-}: {
-  stateTimer: TimerState
-  handleTimer: () => void
-}) => {
+export const TimerButton = () => {
+  const { stateTimer, handleTimer } = useContext(ContainerContext)
+
   return <button onClick={handleTimer}>{stateTimer}</button>
 }

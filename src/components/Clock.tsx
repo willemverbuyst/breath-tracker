@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { ContainerContext } from './Container'
 import styles from './styles.module.css'
 
-export const Clock = ({ num }: { num: number }) => {
+export const Clock = () => {
+  const { num } = useContext(ContainerContext)
   const [time, setTime] = useState('00:00')
 
   useEffect(() => {

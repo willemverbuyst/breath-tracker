@@ -1,13 +1,12 @@
+import { useContext } from 'react'
 import { TimerState } from '../types'
+import { ContainerContext } from './Container'
 import styles from './styles.module.css'
 
-export const BreathButton = ({
-  stateTimer,
-  handleClick,
-}: {
-  stateTimer: TimerState
-  handleClick: () => void
-}) => {
+export const BreathButton = () => {
+  const { stateTimer, handleClick } =
+    ContainerContext && useContext(ContainerContext)
+
   return (
     <div
       className={`${styles.container} ${

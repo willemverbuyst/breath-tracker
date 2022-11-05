@@ -1,10 +1,10 @@
 import './App.css'
-import Container from './components/Container'
+import { BreathContainer } from './components/Container'
 
 function App() {
   return (
     <div className="App">
-      <Container />
+      <BreathContainer />
     </div>
   )
 }
