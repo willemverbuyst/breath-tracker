@@ -12,3 +12,8 @@
 .breathing {
   background-color: #ff1493;
 }
+
+.clock {
+  padding: 0.5rem;
+  color: #008080;
+}
