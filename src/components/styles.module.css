@@ -32,3 +32,20 @@
   align-items: center;
   border: 2px solid #333;
 }
+
+.animated {
+  animation-name: cssAnimation;
+  animation-duration: 1s;
+}
+
+@keyframes cssAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

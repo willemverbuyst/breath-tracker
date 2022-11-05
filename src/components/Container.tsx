@@ -1,4 +1,12 @@
-import { createContext, useRef, useState, useMemo } from 'react'
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { useAnimation } from '../hooks/useAnimation'
 import { TimerState } from '../types'
 import { BreathButton } from './BreathButton'
 import { BreathCount } from './BreathCount'
@@ -11,6 +19,7 @@ interface Context {
   stateTimer: TimerState
   handleClick?: () => void
   handleTimer?: () => void
+  setRef?: (node: HTMLElement | null) => void
 }
 
 const initialState = { count: 0, num: 0, stateTimer: TimerState.Start }
@@ -24,6 +33,27 @@ const Container = ({ children }: { children: JSX.Element[] }) => {
     num: number
     stateTimer: TimerState
   }>(initialState)
+  const [{ buttonRef }, setRefState] = useState({ buttonRef: null })
+
+  const setRef = useCallback((node: HTMLElement | null) => {
+    if (node && node.dataset && typeof node.dataset.refkey === 'string') {
+      const key = node.dataset.refkey as string
+      setRefState((previousState) => ({
+        ...previousState,
+        [key]: node,
+      }))
+    }
+  }, [])
+
+  const animation = useAnimation({ buttonRef })
+
+  const componentJustMounted = useRef(true)
+  useEffect(() => {
+    if (!componentJustMounted.current && animation) {
+      animation.run()
+    }
+    componentJustMounted.current = false
+  }, [containerState.count])
 
   const timer = useRef(0)
   const startTimer = () => {
@@ -87,8 +117,8 @@ const Container = ({ children }: { children: JSX.Element[] }) => {
   }
 
   const memoizedValue = useMemo(
-    () => ({ ...containerState, handleClick, handleTimer }),
-    [containerState, handleClick, handleTimer]
+    () => ({ ...containerState, handleClick, handleTimer, setRef }),
+    [containerState, handleClick, handleTimer, setRef]
   )
 
   return (

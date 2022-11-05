@@ -1,11 +1,25 @@
-import { RefObject, useLayoutEffect } from 'react'
+import { useLayoutEffect, useState } from 'react'
+import styles from '../components/styles.module.css'
 
-export const useAnimation = (el: RefObject<HTMLElement> | null) => {
+interface IProps {
+  buttonRef: HTMLElement | null
+}
+
+export const useAnimation = ({ buttonRef }: IProps) => {
+  const [animation, setAnimation] = useState<{ run: () => void } | null>(null)
+
   useLayoutEffect(() => {
-    if (!el) return
-    const e = el?.current
+    if (!buttonRef) {
+      return
+    }
 
-    console.log('click', e)
-  })
-  return 'test'
+    const run = () => {
+      buttonRef.classList.add(styles.animated)
+      setTimeout(() => {
+        buttonRef.classList.remove(styles.animated)
+      }, 1000)
+    }
+    setAnimation({ run })
+  }, [buttonRef])
+  return animation
 }

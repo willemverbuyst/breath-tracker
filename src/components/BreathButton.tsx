@@ -4,11 +4,13 @@ import { ContainerContext } from './Container'
 import styles from './styles.module.css'
 
 export const BreathButton = () => {
-  const { stateTimer, handleClick } =
+  const { stateTimer, handleClick, setRef } =
     ContainerContext && useContext(ContainerContext)
 
   return (
     <div
+      ref={setRef}
+      data-refkey="buttonRef"
       className={`${styles.container} ${
         stateTimer === TimerState.Start ? styles.breathing : ''
       }`}
