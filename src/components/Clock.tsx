@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { ContainerContext } from './Container'
 import styles from './styles.module.css'
 
-export const Clock = () => {
+export const Clock = (): JSX.Element => {
   const { num } = useContext(ContainerContext)
   const [time, setTime] = useState('00:00')
 

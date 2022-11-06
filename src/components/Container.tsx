@@ -27,7 +27,11 @@ const initialState = { count: 0, num: 0, stateTimer: TimerState.Start }
 export const ContainerContext = createContext<Context>(initialState)
 const { Provider } = ContainerContext
 
-const Container = ({ children }: { children: JSX.Element[] }) => {
+interface IProps {
+  children: JSX.Element[]
+}
+
+const Container = ({ children }: IProps): JSX.Element => {
   const [containerState, setContainerState] = useState<{
     count: number
     num: number
@@ -49,7 +53,11 @@ const Container = ({ children }: { children: JSX.Element[] }) => {
 
   const componentJustMounted = useRef(true)
   useEffect(() => {
-    if (!componentJustMounted.current && animation) {
+    if (
+      !componentJustMounted.current &&
+      animation &&
+      containerState.count !== 0
+    ) {
       animation.run()
     }
     componentJustMounted.current = false
@@ -57,13 +65,6 @@ const Container = ({ children }: { children: JSX.Element[] }) => {
 
   const timer = useRef(0)
   const startTimer = () => {
-    setContainerState(
-      (previous) =>
-        previous && {
-          ...previous,
-          stateTimer: TimerState.Stop,
-        }
-    )
     timer.current = setInterval(() => {
       setContainerState(
         (previous) =>
@@ -88,6 +89,13 @@ const Container = ({ children }: { children: JSX.Element[] }) => {
   const handleTimer = () => {
     if (containerState.stateTimer === TimerState.Start) {
       startTimer()
+      setContainerState(
+        (previous) =>
+          previous && {
+            ...previous,
+            stateTimer: TimerState.Stop,
+          }
+      )
     } else if (containerState.stateTimer === TimerState.Stop) {
       clearInterval(timer.current)
       setContainerState(
@@ -98,21 +106,11 @@ const Container = ({ children }: { children: JSX.Element[] }) => {
           }
       )
     } else {
-      setContainerState(
-        (previous) =>
-          previous && {
-            ...previous,
-            count: 0,
-            num: 0,
-          }
-      )
-      setContainerState(
-        (previous) =>
-          previous && {
-            ...previous,
-            stateTimer: TimerState.Start,
-          }
-      )
+      setContainerState(() => ({
+        count: 0,
+        num: 0,
+        stateTimer: TimerState.Start,
+      }))
     }
   }
 
@@ -133,7 +131,7 @@ Container.BreathButton = BreathButton
 Container.BreathCount = BreathCount
 Container.TimerButton = TimerButton
 
-export const BreathContainer = () => {
+export const BreathContainer = (): JSX.Element => {
   return (
     <Container>
       <Container.TimerButton />

@@ -3,7 +3,7 @@ import { TimerState } from '../types'
 import { ContainerContext } from './Container'
 import styles from './styles.module.css'
 
-export const BreathButton = () => {
+export const BreathButton = (): JSX.Element => {
   const { stateTimer, handleClick, setRef } =
     ContainerContext && useContext(ContainerContext)
 
