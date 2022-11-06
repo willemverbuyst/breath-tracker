@@ -12,6 +12,7 @@ import { BreathButton } from './BreathButton'
 import { BreathCount } from './BreathCount'
 import { Clock } from './Clock'
 import { TimerButton } from './TimerButton'
+import customStyles from './stylesCustom.module.css'
 
 interface Context {
   count: number
@@ -135,9 +136,9 @@ export const BreathContainer = (): JSX.Element => {
   return (
     <Container>
       <Container.TimerButton />
-      <Container.Clock />
-      <Container.BreathButton />
-      <Container.BreathCount />
+      <Container.Clock style={{ color: 'teal' }} />
+      <Container.BreathButton style={{ border: '2px solid #333' }} />
+      <Container.BreathCount className={customStyles.breathCount} />
     </Container>
   )
 }

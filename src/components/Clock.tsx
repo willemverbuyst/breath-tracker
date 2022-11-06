@@ -2,9 +2,18 @@ import { useContext, useEffect, useState } from 'react'
 import { ContainerContext } from './Container'
 import styles from './styles.module.css'
 
-export const Clock = (): JSX.Element => {
+interface IProps {
+  style?: { [key: string]: string }
+  className?: string
+}
+
+export const Clock = ({
+  style: userStyles = {},
+  className,
+}: IProps): JSX.Element => {
   const { num } = useContext(ContainerContext)
   const [time, setTime] = useState('00:00')
+  const classNames = [styles.clock, className].join(' ').trim()
 
   useEffect(() => {
     const minutes = Math.floor(num / 60)
@@ -15,5 +24,9 @@ export const Clock = (): JSX.Element => {
     setTime(`${min}:${sec}`)
   }, [num])
 
-  return <div className={styles.clock}>{time}</div>
+  return (
+    <div style={userStyles} className={classNames}>
+      {time}
+    </div>
+  )
 }
